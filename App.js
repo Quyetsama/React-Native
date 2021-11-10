@@ -1,53 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 
-const MomoLogin = () => {
+const FaceBookLogin = () => {
     return (
         <SafeAreaView style={ styles.container }>
-            <StatusBar style='light'/>
-
             <View style={ styles.content }>
-                <View style={ styles.textWrapper }>
-                    <Text style={ styles.hiText }>Xin chào!</Text>
-                    <Text style={ styles.userText }>NGUYEN VAN QUYET</Text>
-                    <Text style={ styles.userText }>0867985106</Text>
-                </View>
+                <View>
+                    <TextInput style={ styles.input } placeholder='Số điện thoại hoặc email'/>
 
-                <View style={ styles.form }>
-                    <FontAwesome5 name="lock" size={24} color="black" style={ styles.icon } />
-
-                    <TextInput 
-                        style={ styles.inputPassword }
-                        keyboardType = 'numeric'
-                        secureTextEntry={ true }
-                        maxLength= '6'
-                        autoFocus = { true }
-                        placeholder = 'Nhập mật khẩu'
-                        placeholderTextColor = '#929292'
-                    />
-
-                    <TouchableOpacity style={ styles.buttonLogin }>
-                        <Text style={ styles.buttonLoginText }>ĐĂNG NHẬP</Text>
+                    <TouchableOpacity style={ styles.button }>
+                        <Text style={ styles.buttonText }>Đăng nhập</Text>
                     </TouchableOpacity>
                 </View>
-
-                <View style={ styles.action }>
-                    <TouchableOpacity style={ styles.buttonAction }>
-                        <Text style={[ styles.userText, {fontSize: 12} ]}>QUÊN MẬT KHẨU</Text>
+                
+                <View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', width: '70%' }}>
+                        <View style={{ width: 30, flex: 1, height: 1, borderWidth: 0.5, borderColor: '#8f9ca6' }}></View>
+                        <Text style={{ width: 50, textAlign: 'center' }}>Hoặc</Text>
+                        <View style={{ width: 30, flex: 1, height: 1, borderWidth: 0.5, borderColor: '#8f9ca6' }}></View>
+                    </View>
+                    <TouchableOpacity style={[ styles.button, styles.buttonRegister ]}>
+                        <Text style={ styles.buttonTextRegister }>Tạo tài khoản mới</Text>
                     </TouchableOpacity>
-
-                    <TouchableOpacity style={ styles.buttonAction }>
-                        <Text style={[ styles.userText, {fontSize: 12} ]}>THOÁT TÀI KHOẢN</Text>
-                    </TouchableOpacity>
-                </View>
+                </View>       
             </View>
         </SafeAreaView>
-    );
+    )
 }
-
+ 
 const TEXT = {
     color: '#fff',
     textAlign: 'center'
@@ -56,71 +39,48 @@ const TEXT = {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#b0006d',
+        backgroundColor: '#fff',
         paddingTop: Constants.statusBarHeight
     },
 
     content: {
-        paddingHorizontal: 60
-    },
-
-    textWrapper: {
-        marginTop: 60,
-        marginBottom: 30,
-    },
-
-    hiText: {
-        ...TEXT,
-        fontSize: 20,
-        lineHeight: 50,
-        fontWeight: 'bold'
-    },
-
-    userText: {
-        ...TEXT,
-        fontSize: 16,
-        lineHeight: 30
-    },
-
-    form: {
-        marginBottom: 30,
-    },
-
-    icon: {
-        position: 'absolute',
-        top: 15,
-        left: 25,
-        zIndex: 10,
-        opacity: 0.7
-    },
-    
-    inputPassword: {
-        height: 55,
-        backgroundColor: '#fff',
-        borderRadius: 28,
-        fontSize: 16,
-        color: "#929292",
-        textAlign: 'center',
-        // textAlignVertical: 'center',
-        paddingHorizontal: 30
-    },
-
-    buttonLogin: {
-        backgroundColor: '#8d015a',
-        height: 50,
-        marginTop: 15,
-        borderRadius: 25,
-        justifyContent: 'center',
-    },
-
-    buttonLoginText: {
-        ...TEXT
-    },
-
-    action: {
-        flexDirection: 'row',
+        flex: 1,
+        marginTop: 50,
+        paddingHorizontal: 30,
         justifyContent: 'space-between'
-    }
-})
+    },
 
-export default MomoLogin;
+    input: {
+        height: 50,
+        backgroundColor: '#fff',
+        borderRadius: 3,
+        borderColor: '#8f9ca6',
+        borderWidth: 0.5,
+        paddingHorizontal: 30, 
+        color: '#8f9ca6'
+    },
+
+    button: {
+        height: 50,
+        backgroundColor: '#1693f2',
+        borderRadius: 6,
+        marginTop: 15,
+        justifyContent: 'center'
+    }, 
+
+    buttonText: {
+        ...TEXT
+    }, 
+
+    buttonRegister: {
+        backgroundColor: '#dae9f5',
+        marginBottom: 30
+    },
+
+    buttonTextRegister: {
+        ...TEXT, 
+        color: '#1693f2'
+    },
+})
+  
+  export default FaceBookLogin
