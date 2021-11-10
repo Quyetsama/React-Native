@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image, Button, Platform, Switch } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image, Button, Platform, Switch, TouchableHighlight } from 'react-native';
 import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
 
-import bulbOn from './assets/bulb-on.png';
-import bulbOff from './assets/bulb-off.png';
+import traffic from './assets/traffic-light.png';
+import trafficRed from './assets/traffic-light-red.png';
+import trafficGreen from './assets/traffic-light-green.png';
+import trafficYellow from './assets/traffic-light-yellow.png';
 
 import { Dimensions } from 'react-native';
 
@@ -15,21 +17,50 @@ const windowHeight = Dimensions.get('window').height
 
 const TheLight = () => {
     
-    const [isEnabled, setIsEnabled] = useState(false);
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-    
+    const turnOn = (color) => {
+        setColor(color)
+    }
+
+    const [color, setColor] = useState('')
+
+    let imgSource = traffic
+
+    if(color === 'red'){
+        imgSource = trafficRed
+    }
+    else if(color === 'yellow'){
+        imgSource = trafficYellow
+    }
+    else if(color === 'green'){
+        imgSource = trafficGreen
+    }
+
     return (
         <SafeAreaView style={ styles.container }>
-            <Image source={ isEnabled ? bulbOn : bulbOff } style={ styles.image }/>
+            <Image source={ imgSource } style={ styles.image }/>
 
-            <View style={{ flex:0.2, justifyContent: 'center', alignItems: 'center' }}>
-                <Switch
-                    trackColor={{ false: "#767577", true: "#81b0ff" }}
-                    // thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={toggleSwitch}
-                    value={isEnabled}
-                />
+            <View style={ styles.action }>
+                <TouchableHighlight
+                    style={[ styles.button, { backgroundColor: 'red' } ]}
+                    activeOpacity={0.6}
+                    underlayColor='#fff'
+                    onPress={ () => turnOn('red') }>
+                    <Text style={ styles.text }>Red</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                    style={[ styles.button, { backgroundColor: 'orange' } ]}
+                    activeOpacity={0.6}
+                    underlayColor='#fff'
+                    onPress={ () => turnOn('yellow') }>
+                    <Text style={ styles.text }>Yellow</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                    style={[ styles.button, { backgroundColor: 'green' } ]}
+                    activeOpacity={0.6}
+                    underlayColor='#fff'
+                    onPress={ () => turnOn('green') }>
+                    <Text style={ styles.text }>Green</Text>
+                </TouchableHighlight>
             </View>
             
         </SafeAreaView>
@@ -37,19 +68,36 @@ const TheLight = () => {
 }
  
 const styles = StyleSheet.create({
+    text:{
+        color: '#fff', 
+        textAlign: 'center'
+    },
+
     container: {
         flex: 1,
-        paddingTop: Constants.statusBarHeight
+        paddingTop: Constants.statusBarHeight,
+        backgroundColor: 'black'
+    },
+
+    action: {
+        flex:0.5,
+        flexDirection: 'row', 
+        justifyContent: 'space-around', 
+        alignItems: 'center'
     },
 
     image: {
         flex: 1,
-        // maxWidth: '100%',
-        // maxHeight: '100%',
-        // resizeMode: 'contain',
-        backgroundColor: 'red',
-        width: windowWidth,
-        height: (windowWidth * 925) / 631
+        maxWidth: '100%',
+        maxHeight: '100%',
+        resizeMode: 'contain'
+    },
+
+    button: {
+        width: '21%', 
+        height: 30, 
+        justifyContent: 'center', 
+        borderRadius: 5
     }
 })
 
