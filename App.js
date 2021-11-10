@@ -1,5 +1,5 @@
-import React from 'react';
-import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image, Button, Platform } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image, Button, Platform, Switch } from 'react-native';
 import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
 
@@ -11,19 +11,24 @@ import { Dimensions } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
-const os = Platform.OS
+
 
 const TheLight = () => {
     
+    const [isEnabled, setIsEnabled] = useState(false);
+    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+    
     return (
         <SafeAreaView style={ styles.container }>
-            <Image source={ bulbOn } style={ styles.image }/>
+            <Image source={ isEnabled ? bulbOn : bulbOff } style={ styles.image }/>
 
             <View style={{ flex:0.2, justifyContent: 'center', alignItems: 'center' }}>
-                <Button
-                    title={"Bật / tắt đèn " + os}
-                    color={ Platform.OS === "android" ? "#841584" : "blue"}
-                    accessibilityLabel="Learn more about this purple button"
+                <Switch
+                    trackColor={{ false: "#767577", true: "#81b0ff" }}
+                    // thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+                    ios_backgroundColor="#3e3e3e"
+                    onValueChange={toggleSwitch}
+                    value={isEnabled}
                 />
             </View>
             
