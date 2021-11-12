@@ -1,126 +1,143 @@
-import React from 'react';
-import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { Alert, SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
-import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Formik } from 'formik';
+import { SignupSchema } from './validation';
+import FormField from './FormField';
+import { styles } from './Styles';
 
-const MomoLogin = () => {
+
+const Register = () => {
+
+    // const [firstName, setFirstName] = useState('')
+    // const [lastName, setLastName] = useState('')
+
+    // const submitForm = () => {
+    //     console.log(firstName, lastName)
+    // }
+
+    function onSubmitHandler(values){
+        Alert.alert(
+            'Register successfully!',
+            'Form data: ' + JSON.stringify(values),
+            [
+                {
+                  text: "Cancel",
+                  onPress: () => console.log("Cancel Pressed"),
+                  style: "cancel"
+                },
+                { text: "OK", onPress: () => console.log("OK Pressed") }
+            ],
+            { cancelable: false }
+        )
+    }
+
+    function isFormValid(isValid, touched) {
+        // console.log(isValid + ' ' + Object.keys(touched).length)
+        return isValid && Object.keys(touched).length !== 0
+    }
+
     return (
         <SafeAreaView style={ styles.container }>
             <StatusBar style='light'/>
+            <View style={ styles.viewTop }>
+                    <Text style={ styles.title }>Register</Text>
+            </View>
 
             <View style={ styles.content }>
-                <View style={ styles.textWrapper }>
-                    <Text style={ styles.hiText }>Xin chào!</Text>
-                    <Text style={ styles.userText }>NGUYEN VAN QUYET</Text>
-                    <Text style={ styles.userText }>0867985106</Text>
-                </View>
+                <KeyboardAwareScrollView 
+                    style={{ paddingHorizontal: 21 }}
+                    extraScrollHeight={ 100 } 
+                    keyboardShouldPersistTaps='handled'
+                >
+                    <Formik
+                        initialValues={{ firstName: '', lastName: '', email: '', passWord: '', rePassWord: '' }}
+                        validationSchema={ SignupSchema }
+                        onSubmit={ onSubmitHandler }
+                    >
+                        {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValid  }) => (
+                            <>
+                                
+                                <FormField 
+                                    label='First Name' 
+                                    field='firstName'
+                                    handleChange={ handleChange } 
+                                    handleBlur={ handleBlur }
+                                    values={ values }
+                                    errors={ errors }
+                                    touched={ touched }
+                                />           
 
-                <View style={ styles.form }>
-                    <FontAwesome5 name="lock" size={24} color="black" style={ styles.icon } />
+                                <FormField 
+                                    label='Last Name' 
+                                    field='lastName'
+                                    handleChange={ handleChange } 
+                                    handleBlur={ handleBlur }
+                                    values={ values }
+                                    errors={ errors }
+                                    touched={ touched }
+                                    autoCapitalize="words"
+                                />  
+                                
+                                <FormField 
+                                    label='Email' 
+                                    field='email'
+                                    handleChange={ handleChange } 
+                                    handleBlur={ handleBlur }
+                                    values={ values }
+                                    errors={ errors }
+                                    touched={ touched }
+                                    autoCapitalize="words"
+                                /> 
+                                
+                                <FormField 
+                                    label='Password' 
+                                    field='passWord'
+                                    handleChange={ handleChange } 
+                                    handleBlur={ handleBlur }
+                                    values={ values }
+                                    errors={ errors }
+                                    touched={ touched }
+                                    secureTextEntry={ true }
+                                /> 
+                                
+                                <FormField 
+                                    label='Confirm Password' 
+                                    field='rePassWord'
+                                    handleChange={ handleChange } 
+                                    handleBlur={ handleBlur }
+                                    values={ values }
+                                    errors={ errors }
+                                    touched={ touched }
+                                    secureTextEntry={ true }
+                                /> 
 
-                    <TextInput 
-                        style={ styles.inputPassword }
-                        keyboardType = 'numeric'
-                        secureTextEntry={ true }
-                        maxLength= '6'
-                        autoFocus = { true }
-                        placeholder = 'Nhập mật khẩu'
-                        placeholderTextColor = '#929292'
-                    />
+                                <TouchableOpacity 
+                                    disabled={ !isFormValid(isValid, touched) }
+                                    onPress={ handleSubmit }
+                                >
+                                    <View
+                                        style={[ styles.button, { opacity: isFormValid(isValid, touched) ? 1 : 0.5 } ]} 
+                                    >
 
-                    <TouchableOpacity style={ styles.buttonLogin }>
-                        <Text style={ styles.buttonLoginText }>ĐĂNG NHẬP</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={ styles.action }>
-                    <TouchableOpacity style={ styles.buttonAction }>
-                        <Text style={[ styles.userText, {fontSize: 12} ]}>QUÊN MẬT KHẨU</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={ styles.buttonAction }>
-                        <Text style={[ styles.userText, {fontSize: 12} ]}>THOÁT TÀI KHOẢN</Text>
-                    </TouchableOpacity>
-                </View>
+                                        <Text>SUBMIT</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </>
+                        )}
+                        
+                    </Formik>
+                </KeyboardAwareScrollView>
             </View>
+            
+            
         </SafeAreaView>
     );
 }
 
-const TEXT = {
-    color: '#fff',
-    textAlign: 'center'
-}
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#b0006d',
-        paddingTop: Constants.statusBarHeight
-    },
 
-    content: {
-        paddingHorizontal: 60
-    },
 
-    textWrapper: {
-        marginTop: 60,
-        marginBottom: 30,
-    },
-
-    hiText: {
-        ...TEXT,
-        fontSize: 20,
-        lineHeight: 50,
-        fontWeight: 'bold'
-    },
-
-    userText: {
-        ...TEXT,
-        fontSize: 16,
-        lineHeight: 30
-    },
-
-    form: {
-        marginBottom: 30,
-    },
-
-    icon: {
-        position: 'absolute',
-        top: 15,
-        left: 25,
-        zIndex: 10,
-        opacity: 0.7
-    },
-    
-    inputPassword: {
-        height: 55,
-        backgroundColor: '#fff',
-        borderRadius: 28,
-        fontSize: 16,
-        color: "#929292",
-        textAlign: 'center',
-        // textAlignVertical: 'center',
-        paddingHorizontal: 30
-    },
-
-    buttonLogin: {
-        backgroundColor: '#8d015a',
-        height: 50,
-        marginTop: 15,
-        borderRadius: 25,
-        justifyContent: 'center',
-    },
-
-    buttonLoginText: {
-        ...TEXT
-    },
-
-    action: {
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    }
-})
-
-export default MomoLogin;
+export default Register;
